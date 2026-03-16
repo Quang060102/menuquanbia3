@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIA VƯỜN NHÀ BI</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#0a0a0a;
+color:white;
+margin:0;
+}
+
+.header{
+text-align:center;
+padding:25px;
+background:#000;
+border-bottom:3px solid #ffb400;
+}
+
+.header h1{
+color:#ffb400;
+margin:0;
+}
+
+.ban{
+text-align:center;
+padding:10px;
+font-size:18px;
+}
+
+.menu{
+display:grid;
+grid-template-columns:1fr;
+max-width:700px;
+margin:auto;
+padding:10px;
+}
+
+.item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:12px;
+border-bottom:1px solid #333;
+}
+
+.price{
+color:#ffb400;
+font-weight:bold;
+}
+
+button{
+background:#ffb400;
+border:none;
+padding:6px 12px;
+border-radius:5px;
+cursor:pointer;
+font-weight:bold;
+}
+
+button:hover{
+background:#ffc933;
+}
+
+.cart{
+max-width:700px;
+margin:auto;
+padding:10px;
+}
+
+.cart ul{
+padding-left:20px;
+}
+
+.send{
+width:100%;
+padding:12px;
+font-size:18px;
+margin-top:10px;
+}
+
+.footer{
+text-align:center;
+padding:20px;
+color:#aaa;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+<h1>🍺 BIA VƯỜN NHÀ BI</h1>
+<p>Menu Món Nướng</p>
+</div>
+
+<div class="ban">
+Bàn: <span id="ban"></span>
+</div>
+
+<div class="menu">
+
+<div class="item">
+<span>01. Gà nướng cả con</span>
+<div>
+<span class="price">300k</span>
+<button onclick="add('Gà nướng cả con')">+</button>
+</div>
+</div>
+
+<div class="item">
+<span>02. Gà nướng nửa con</span>
+<div>
+<span class="price">150k</span>
+<button onclick="add('Gà nướng nửa con')">+</button>
+</div>
+</div>
+
+<div class="item">
+<span>03. Cá nướng</span>
+<div>
+<span class="price">200k</span>
+<button onclick="add('Cá nướng')">+</button>
+</div>
+</div>
+
+<div class="item">
+<span>04. Tôm nướng</span>
+<div>
+<span class="price">150k</span>
+<button onclick="add('Tôm nướng')">+</button>
+</div>
+</div>
+
+<div class="item">
+<span>05. Hàu nướng</span>
+<div>
+<span class="price">100k</span>
+<button onclick="add('Hàu nướng')">+</button>
+</div>
+</div>
+
+<div class="item">
+<span>06. Ba chỉ nướng</span>
+<div>
+<span class="price">130k</span>
+<button onclick="add('Ba chỉ nướng')">+</button>
+</div>
+</div>
+
+<div class="item">
+<span>07. Lòng nướng</span>
+<div>
+<span class="price">80k</span>
+<button onclick="add('Lòng nướng')">+</button>
+</div>
+</div>
+
+<div class="item">
+<span>08. Cật nướng</span>
+<div>
+<span class="price">100k</span>
+<button onclick="add('Cật nướng')">+</button>
+</div>
+</div>
+
+<div class="item">
+<span>09. Thập cẩm nướng</span>
+<div>
+<span class="price">150k</span>
+<button onclick="add('Thập cẩm nướng')">+</button>
+</div>
+</div>
+
+</div>
+
+<div class="cart">
+
+<h3>🛒 Món đã chọn</h3>
+
+<ul id="cart"></ul>
+
+<button class="send" onclick="sendOrder()">📩 Gửi gọi món</button>
+
+</div>
+
+<div class="footer">
+📞 0379 152 557
+</div>
+
+<script>
+
+const url = "https://script.google.com/macros/s/AKfycbzkEAAOkPTeywjxNNzDFagDNZnP3pIyrmQdYaYcmdNYM7gcMD9UsA5S2VN8f54vopY/exec";
+
+const params = new URLSearchParams(window.location.search);
+const ban = params.get("ban") || "Không rõ";
+
+document.getElementById("ban").innerText = ban;
+
+let cart = [];
+
+function add(food){
+
+cart.push(food);
+
+let li = document.createElement("li");
+li.innerText = food;
+
+document.getElementById("cart").appendChild(li);
+
+}
+
+function sendOrder(){
+
+if(cart.length === 0){
+alert("Chưa chọn món");
+return;
+}
+
+fetch(url,{
+method:"POST",
+mode:"no-cors",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+ban:"Bàn "+ban,
+mon:cart.join(", ")
+})
+})
+
+.then(()=>{
+alert("Đã gửi gọi món");
+
+cart=[];
+document.getElementById("cart").innerHTML="";
+})
+
+.catch(()=>{
+alert("Lỗi gửi món");
+});
+
+}
+
+</script>
+
+</body>
+</html>
